@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const fs = require('fs');
 const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
@@ -58,3 +59,23 @@ fs.createReadStream('data/test.csv')
 
   }); 
 
+=======
+const fs = require('fs'); 
+const csv = require('csv-parser');
+
+fs.createReadStream('data/AppleStore.csv')
+.pipe(csv())
+.on('data', (row) => {
+    try {
+        //perform the operation
+        console.log(row.id % 2 && row)
+    }
+    catch(err) {
+        //error handler
+    }
+})
+.on('end',(row) => {
+    //some final operation
+    console.log(data)
+});  
+>>>>>>> init

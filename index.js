@@ -1,7 +1,13 @@
-<<<<<<< HEAD
 const fs = require('fs');
 const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+
+const ex1 = require('./exercises/ex1')
+const ex2 = require('./exercises/ex2')
+const ex3 = require('./exercises/ex3')
+const ex4 = require('./exercises/ex4')
+const ex5 = require('./exercises/ex5')
+
 const csvWriter = createCsvWriter({
   path: 'output/out.csv',
   header: [
@@ -18,64 +24,40 @@ const csvWriter = createCsvWriter({
   ]
 });
 
-//id,track_name,size_bytes,currency,price,rating_count_tot,user_rating,ver,prime_genre,sup_devices.num,vpp_lic
-
 const correctRows = []
 
-const hasNotEmptyFields = row => {
-  const keys = Object.keys(row).filter(notEmptyKey => notEmptyKey)
-  return keys.map(key => !!row[key]).every(correct => correct)
+const saveRecords = () => {
+  csvWriter
+    .writeRecords(correctRows)
+    .then(() => console.log('The CSV file was written successfully'));
 }
 
-const hasPriceHigherThanZero = price => price > 0
-const hasSizeoHigherThanZeroBites = size => size > 0
-const hasRatingLowerTankZero = rating  => rating > 0
-const hasNoCategory = category => !!category
- 
-fs.createReadStream('data/test.csv')
+//-------------------------------------------------------------
+
+const args = process.argv.slice(2)
+const path = args[0] || 'data/AppleStore.csv'
+
+fs.createReadStream(path)
   .pipe(csv())
   .on('data', (row) => {
     try {
-      //perform the operation
-
-      hasPriceHigherThanZero(row.price) ? '' : row.price = '0'
-      hasSizeoHigherThanZeroBites(row['size_bytes']) ? '' : row['size_bytes'] = Math.floor(Math.random() * 100000) + 100000
-      hasRatingLowerTankZero(row['rating_count_tot']) ? '' :row['rating_count_tot'] = '0'
-      hasNoCategory(row['prime_genre']) ? '' : row['prime_genre'] = 'Utilities'
-      
-      hasNotEmptyFields(row) && correctRows.push(row)
+      ex1.hasPriceHigherThanZero(row.price) ? '' : row.price = '0'
+      ex1.hasSizeoHigherThanZeroBites(row['size_bytes']) ? '' : row['size_bytes'] = ex1.getRowBitSize()
+      ex1.hasRatingLowerTankZero(row['rating_count_tot']) ? '' : row['rating_count_tot'] = '0'
+      ex1.hasNoCategory(row['prime_genre']) ? '' : row['prime_genre'] = 'Utilities'
+      ex1.hasSupportedDivicesLowerThanZero(row['sup_devices.num']) ?  row['sup_devices.num'] = '0' : ''
+      ex1.hasNotEmptyFields(row) && correctRows.push(row)
     }
     catch (err) {
-      //error handler
+      console.error(err)
     }
   })
   .on('end', () => {
-    //console.log(correctRows)
-    //some final operation
 
-    csvWriter
-      .writeRecords(correctRows)
-      .then(() => console.log('The CSV file was written successfully'));
+    ex2.execute(correctRows)
+    ex3.execute(correctRows)
+    ex4.execute(correctRows)
+    ex5.execute(correctRows)
 
-  }); 
-
-=======
-const fs = require('fs'); 
-const csv = require('csv-parser');
-
-fs.createReadStream('data/AppleStore.csv')
-.pipe(csv())
-.on('data', (row) => {
-    try {
-        //perform the operation
-        console.log(row.id % 2 && row)
-    }
-    catch(err) {
-        //error handler
-    }
-})
-.on('end',(row) => {
-    //some final operation
-    console.log(data)
-});  
->>>>>>> init
+    saveRecords()
+  });

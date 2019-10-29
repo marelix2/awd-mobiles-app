@@ -47,7 +47,13 @@ export const execute = correctRows => {
   const rating = correctRows.map(row => parseFloat(row['user_rating']))
   const supportDevices = correctRows.map(row => parseFloat(row['sup_devices.num']))
 
-  // console.log(findLineByLeastSquares(bitSize, price))
-  // console.log(findLineByLeastSquares(ratingQuantity, rating))
-  // console.log(findLineByLeastSquares(supportDevices,rating))
+  const bitSizePrice = findLineByLeastSquares(bitSize, price)
+  const ratingQuantityRating = findLineByLeastSquares(ratingQuantity, rating)
+  const supportDevicesRatring = findLineByLeastSquares(supportDevices,rating)
+}
+
+const createJsonFile = (fileName, ...otherProps) => {
+  const jsonFile = { ...otherProps }
+  let json = JSON.stringify(bitSizeJson)
+  fs.writeFile(`output/${fileName}.json`, json, 'utf8', () => { });
 }

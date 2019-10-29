@@ -5,14 +5,27 @@
   "repository": "https://gitlab-psc.tt.com.pl/rusinekm/awd-mobile-apps.git",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node bin/dev",
+    "build": "mkdir dist && babel src -s -d dist",
+    "dev": "nodemon --exec npm run babel-node -- ./index.js",
+    "lint": "eslint",
+    "clear-data": "node bin/dev 'data/testData.csv'"
   },
   "dependencies": {
+    "compute-quantile": "^1.0.1",
     "csv-parser": "^2.3.1",
     "csv-writer": "^1.5.0",
     "fs": "^0.0.1-security",
     "lodash": "^4.17.15",
     "ml5": "^0.4.1",
     "p5": "^0.10.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0"
   }
 }
